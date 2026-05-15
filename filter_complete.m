@@ -78,9 +78,9 @@ end
   gRef = norm(g0); % calibrated gravity magnitude
 
 
-magThreshold = 4.0; % [microT]
-alphaMag = 0.01; % AR(1) adaptation factor
-magRef = norm(m0); % initial expected magnetic field magnitude
+  magThreshold = 4.0; % [microT]
+  alphaMag = 0.01; % AR(1) adaptation factor
+  magRef = norm(m0); % initial expected magnetic field magnitude
 
   % Saved filter states.
   xhat = struct('t', zeros(1, 0),...
@@ -88,10 +88,12 @@ magRef = norm(m0); % initial expected magnetic field magnitude
                 'P', zeros(nx, nx, 0));
 
   meas = struct('t', zeros(1, 0),...
-                'acc', zeros(3, 0),...
-                'gyr', zeros(3, 0),...
-                'mag', zeros(3, 0),...
-                'orient', zeros(4, 0));
+              'acc', zeros(3, 0),...
+              'gyr', zeros(3, 0),...
+              'mag', zeros(3, 0),...
+              'orient', zeros(4, 0),...
+              'accOut', zeros(1, 0),...
+              'magOut', zeros(1, 0));
   try
     %% Create data link
     server = StreamSensorDataReader(3400);
@@ -215,6 +217,8 @@ magRef = norm(m0); % initial expected magnetic field magnitude
       meas.acc(:, end+1) = acc;
       meas.gyr(:, end+1) = gyr;
       meas.mag(:, end+1) = mag;
+      meas.accOut(end+1) = accOut;
+      meas.magOut(end+1) = magOut;
       meas.orient(:, end+1) = orientation;
     end
   catch e
